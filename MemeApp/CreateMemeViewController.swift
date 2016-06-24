@@ -65,6 +65,8 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         }else{
             activityButton.enabled = false
         }
+        
+        self.tabBarController?.tabBar.hidden = true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -140,8 +142,22 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     @IBAction func shareMeme(sender: AnyObject) {
         
         let meme = createMeme()
-        let nextController = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: nil)
-        presentViewController(nextController, animated: true, completion: nil)
+        let controller = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: nil)
+        controller.completionWithItemsHandler = {(activityType, completed: Bool, returnedItems:[AnyObject]?, error: NSError?) in
+            
+            if !completed {
+                print("Error")
+            }
+                // TODO: BE CAREFUL, CHECK THIS !!!!!!
+            else if (activityType == UIActivityTypeSaveToCameraRoll || activityType == UIActivityTypeCopyToPasteboard){
+                // Add it to the memes array in the Application Delegate
+                (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
+            }
+            
+            self.navigationController!.popToRootViewControllerAnimated(true)
+        }
+        self.presentViewController(controller, animated: true, completion: nil)
+
     }
     
     @IBAction func cancelMeme(sender: AnyObject) {
@@ -186,6 +202,10 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     
     func createMeme() -> Meme {
         let meme = Meme(topText: topText.text!, bottomText: bottomText.text!, image: imageView.image!, memedImage: generateMemedImage())
+        
+        // Add it to the memes array in the Application Delegate
+        (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
+        
         return meme
     }
     
@@ -211,4 +231,5 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         
         return memedImage
     }
+    
 }
