@@ -35,6 +35,9 @@ class TableMemesViewController: UITableViewController {
         if let navigationController = self.navigationController
         {
             let createMemeController = self.storyboard!.instantiateViewControllerWithIdentifier("CreateMemeViewController") as! CreateMemeViewController
+            
+            let transition:CATransition = createTransition()
+            navigationController.view.layer.addAnimation(transition, forKey: kCATransition)
             navigationController.pushViewController(createMemeController, animated: true)
         }
     }
@@ -56,5 +59,14 @@ class TableMemesViewController: UITableViewController {
         let openController = self.storyboard!.instantiateViewControllerWithIdentifier("OpenMemeViewController") as! OpenMemeViewController
         openController.meme = memes[indexPath.row]
         self.navigationController?.pushViewController(openController, animated: true)
+    }
+    
+    func createTransition () -> CATransition
+    {
+        let transition:CATransition = CATransition()
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromBottom
+        
+        return transition
     }
 }

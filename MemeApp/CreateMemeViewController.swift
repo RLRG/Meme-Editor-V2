@@ -148,7 +148,6 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
             if !completed {
                 print("Error")
             }
-                // TODO: BE CAREFUL, CHECK THIS !!!!!!
             else if (activityType == UIActivityTypeSaveToCameraRoll || activityType == UIActivityTypeCopyToPasteboard){
                 // Add it to the memes array in the Application Delegate
                 (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
@@ -202,9 +201,6 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     
     func createMeme() -> Meme {
         let meme = Meme(topText: topText.text!, bottomText: bottomText.text!, image: imageView.image!, memedImage: generateMemedImage())
-        
-        // Add it to the memes array in the Application Delegate
-        (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
         
         return meme
     }

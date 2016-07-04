@@ -27,11 +27,11 @@ class CollectionMemesViewController: UICollectionViewController {
         
         // Customizing the collection cells - UICollectionViewLayout
         let space: CGFloat = 3.0
-        let dimension = (self.view.frame.size.width - (2*space))/3.0
+        let dimensionX = (self.view.frame.size.width - (2*space))/3.0
         let dimensionY = (self.view.frame.size.height - (2*space))/5.0
         flowLayoutObject.minimumInteritemSpacing = space
         flowLayoutObject.minimumLineSpacing = space
-        flowLayoutObject.itemSize = CGSizeMake(dimension, dimensionY)
+        flowLayoutObject.itemSize = CGSizeMake(dimensionX, dimensionY)
         
     }
     
@@ -47,6 +47,9 @@ class CollectionMemesViewController: UICollectionViewController {
         if let navigationController = self.navigationController
         {
             let createMemeController = self.storyboard!.instantiateViewControllerWithIdentifier("CreateMemeViewController") as! CreateMemeViewController
+            
+            let transition:CATransition = createTransition()
+            navigationController.view.layer.addAnimation(transition, forKey: kCATransition)
             navigationController.pushViewController(createMemeController, animated: true)
         }
     }
@@ -68,6 +71,15 @@ class CollectionMemesViewController: UICollectionViewController {
         openController.meme = memes[indexPath.row]
         self.navigationController?.pushViewController(openController, animated: true)
         
+    }
+    
+    func createTransition () -> CATransition
+    {
+        let transition:CATransition = CATransition()
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromBottom
+        
+        return transition
     }
     
 }
