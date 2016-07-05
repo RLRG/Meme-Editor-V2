@@ -41,6 +41,9 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         // Top & bottom textfields
         inititializeTextFieldWithAttributes(topText, text: "TOP", attributes: memeTextAttributes)
         inititializeTextFieldWithAttributes(bottomText, text: "BOTTOM", attributes: memeTextAttributes)
+        
+        // Image initialization
+        imageView.image = nil
     }
 
     func inititializeTextFieldWithAttributes(textfield: UITextField, text: String, attributes: [String:AnyObject])
@@ -109,7 +112,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         if (bottomText.isFirstResponder())
         {
             let offset:CGFloat = getKeyboardHeight(notification)
-            view.frame.origin.y += offset
+            view.frame.origin.y = 0
             navBarConstraint.constant += offset
         }
     }
@@ -153,25 +156,20 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
                 (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
             }
             
-            self.navigationController!.popToRootViewControllerAnimated(true)
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
         presentViewController(controller, animated: true, completion: nil)
 
     }
     
     @IBAction func cancelMeme(sender: AnyObject) {
-        
-        activityButton.enabled = false
-        topText.text = "TOP"
-        imageView.image = nil
-        bottomText.text = "BOTTOM"
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     
     // MARK: UImagePickerControllerDelegate methods
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -188,7 +186,10 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     // MARK: UITextFieldDelagate methods
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        textField.text = ""
+        if (textField.text == "TOP" || textField.text == "BOTTOM")
+        {
+            textField.text = ""
+        }
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

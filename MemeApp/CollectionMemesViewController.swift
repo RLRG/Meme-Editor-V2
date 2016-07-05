@@ -49,9 +49,8 @@ class CollectionMemesViewController: UICollectionViewController {
     // MARK: Creating a new meme
     
     @IBAction func createMemeAction(sender: AnyObject) {
-        
-        let commonFunc:commonFunctions = commonFunctions()
-        commonFunc.createMemeAction(navigationController, storyboard: storyboard)
+        let createMemeController = storyboard!.instantiateViewControllerWithIdentifier("CreateMemeViewController") as! CreateMemeViewController
+        presentViewController(createMemeController, animated: true, completion: nil)
     }
     
     
