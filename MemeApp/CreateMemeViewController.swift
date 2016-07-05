@@ -66,7 +66,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
             activityButton.enabled = false
         }
         
-        self.tabBarController?.tabBar.hidden = true
+        tabBarController?.tabBar.hidden = true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -99,7 +99,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         if (bottomText.isFirstResponder())
         {
             let offset:CGFloat = getKeyboardHeight(notification)
-            self.view.frame.origin.y -= offset
+            view.frame.origin.y -= offset
             navBarConstraint.constant -= offset
         }
     }
@@ -109,7 +109,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         if (bottomText.isFirstResponder())
         {
             let offset:CGFloat = getKeyboardHeight(notification)
-            self.view.frame.origin.y += offset
+            view.frame.origin.y += offset
             navBarConstraint.constant += offset
         }
     }
@@ -148,14 +148,14 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
             if !completed {
                 print("Error")
             }
-            else if (activityType == UIActivityTypeSaveToCameraRoll || activityType == UIActivityTypeCopyToPasteboard){
+            else {
                 // Add it to the memes array in the Application Delegate
                 (UIApplication.sharedApplication().delegate as! AppDelegate).memes.append(meme)
             }
             
             self.navigationController!.popToRootViewControllerAnimated(true)
         }
-        self.presentViewController(controller, animated: true, completion: nil)
+        presentViewController(controller, animated: true, completion: nil)
 
     }
     
@@ -213,8 +213,8 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         toolBar.hidden = true
         
         // Render view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawViewHierarchyInRect(self.view.frame,
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.drawViewHierarchyInRect(view.frame,
                                      afterScreenUpdates: true)
         let memedImage : UIImage =
             UIGraphicsGetImageFromCurrentImageContext()

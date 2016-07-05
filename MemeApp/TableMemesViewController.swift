@@ -16,6 +16,9 @@ class TableMemesViewController: UITableViewController {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
     }
     
+    
+    // MARK: Lifecycle & initialization methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,21 +29,21 @@ class TableMemesViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.tabBar.hidden = false
+        tabBarController?.tabBar.hidden = false
         memesTableView.reloadData()
     }
     
+    
+    // MARK: Creating a new meme
+    
     @IBAction func createMemeAction(sender: AnyObject) {
         
-        if let navigationController = self.navigationController
-        {
-            let createMemeController = self.storyboard!.instantiateViewControllerWithIdentifier("CreateMemeViewController") as! CreateMemeViewController
-            
-            let transition:CATransition = createTransition()
-            navigationController.view.layer.addAnimation(transition, forKey: kCATransition)
-            navigationController.pushViewController(createMemeController, animated: true)
-        }
+        let commonFunc:commonFunctions = commonFunctions()
+        commonFunc.createMemeAction(navigationController, storyboard: storyboard)
     }
+    
+    
+    // MARK: UITableViewDelegate & UITableViewDataSource methods
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return memes.count
@@ -56,17 +59,8 @@ class TableMemesViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let openController = self.storyboard!.instantiateViewControllerWithIdentifier("OpenMemeViewController") as! OpenMemeViewController
+        let openController = storyboard!.instantiateViewControllerWithIdentifier("OpenMemeViewController") as! OpenMemeViewController
         openController.meme = memes[indexPath.row]
-        self.navigationController?.pushViewController(openController, animated: true)
-    }
-    
-    func createTransition () -> CATransition
-    {
-        let transition:CATransition = CATransition()
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromBottom
-        
-        return transition
+        navigationController?.pushViewController(openController, animated: true)
     }
 }

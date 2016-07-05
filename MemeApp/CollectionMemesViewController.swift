@@ -19,6 +19,9 @@ class CollectionMemesViewController: UICollectionViewController {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
     }
     
+    
+    // MARK: Lifecycle & initialization methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,8 +30,8 @@ class CollectionMemesViewController: UICollectionViewController {
         
         // Customizing the collection cells - UICollectionViewLayout
         let space: CGFloat = 3.0
-        let dimensionX = (self.view.frame.size.width - (2*space))/3.0
-        let dimensionY = (self.view.frame.size.height - (2*space))/5.0
+        let dimensionX = (view.frame.size.width - (2*space))/3.0
+        let dimensionY = (view.frame.size.height - (2*space))/5.0
         flowLayoutObject.minimumInteritemSpacing = space
         flowLayoutObject.minimumLineSpacing = space
         flowLayoutObject.itemSize = CGSizeMake(dimensionX, dimensionY)
@@ -38,21 +41,21 @@ class CollectionMemesViewController: UICollectionViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.tabBar.hidden = false
+        tabBarController?.tabBar.hidden = false
         collectionViewOutlet.reloadData()
     }
     
+    
+    // MARK: Creating a new meme
+    
     @IBAction func createMemeAction(sender: AnyObject) {
         
-        if let navigationController = self.navigationController
-        {
-            let createMemeController = self.storyboard!.instantiateViewControllerWithIdentifier("CreateMemeViewController") as! CreateMemeViewController
-            
-            let transition:CATransition = createTransition()
-            navigationController.view.layer.addAnimation(transition, forKey: kCATransition)
-            navigationController.pushViewController(createMemeController, animated: true)
-        }
+        let commonFunc:commonFunctions = commonFunctions()
+        commonFunc.createMemeAction(navigationController, storyboard: storyboard)
     }
+    
+    
+    // MARK: UICollectionViewDelegate & UICollectionViewDataSource methods
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return memes.count
@@ -67,19 +70,9 @@ class CollectionMemesViewController: UICollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        let openController = self.storyboard!.instantiateViewControllerWithIdentifier("OpenMemeViewController") as! OpenMemeViewController
+        let openController = storyboard!.instantiateViewControllerWithIdentifier("OpenMemeViewController") as! OpenMemeViewController
         openController.meme = memes[indexPath.row]
-        self.navigationController?.pushViewController(openController, animated: true)
+        navigationController?.pushViewController(openController, animated: true)
         
     }
-    
-    func createTransition () -> CATransition
-    {
-        let transition:CATransition = CATransition()
-        transition.type = kCATransitionPush
-        transition.subtype = kCATransitionFromBottom
-        
-        return transition
-    }
-    
 }

@@ -18,7 +18,7 @@ class OpenMemeViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.tabBarController?.tabBar.hidden = true
+        tabBarController?.tabBar.hidden = true
         openMemeImage.image = meme.memedImage
     }
     
